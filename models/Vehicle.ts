@@ -1,71 +1,79 @@
-import  mongoose, {Schema, model , Document} from 'mongoose';
+import mongoose, { Schema, model, Document } from 'mongoose';
 
-export interface IVehicle extends Document {
-    dateAdded: Date;
-    vehicleType: string;
-    brand: string;
-    model: string;
-    year: number;
-    color: string;
-    licensePlate: string;
-    kilometrage: number;
-    status: "available" | "in-use" | "maintenance";
-    drivers: mongoose.Types.ObjectId[];
+// Interface TypeScript du véhicule
+export interface IVehicule extends Document {
+  dateAjout: Date;
+  typeVehicule: 'voiture' | 'camion' | 'moto' | 'bus';
+  marque: string;
+  modele: string;
+  annee: number;
+  couleur: string;
+  plaqueImmatriculation: string;
+  kilometrage: number;
+  statut: 'disponible' | 'en-utilisation' | 'en-maintenance';
+  conducteurs: mongoose.Types.ObjectId[];
 }
 
-
-const vehicleSchema: Schema<IVehicle> = new Schema({
-    dateAdded: {
-        type: Date,
-        default: Date.now
+// Schéma Mongoose du véhicule
+const vehiculeSchema: Schema<IVehicule> = new Schema(
+  {
+    dateAjout: {
+      type: Date,
+      default: Date.now,
     },
-    vehicleType: {
-        type: String,
-        required: true,
-        enum: ["car", "truck", "motorcycle", "bus"]
+    typeVehicule: {
+      type: String,
+      required: true,
+      enum: ['voiture', 'camion', 'moto', 'bus'],
     },
-    brand: {
-        type: String,
-        required: true,
-        trim: true
+    marque: {
+      type: String,
+      required: true,
+      trim: true,
     },
-    model: {
-        type: String,
-        required: true,
-        trim: true
+    modele: {
+      type: String,
+      required: true,
+      trim: true,
     },
-    year: {
-        type: Number,
-        required: true,
-        min: 1886 
+    annee: {
+      type: Number,
+      required: true,
+      min: 1886,
     },
-    color: {
-        type: String,
-        required: true,
-        trim: true
+    couleur: {
+      type: String,
+      required: true,
+      trim: true,
     },
-    licensePlate: {
-        type: String,
-        required: true,
-        unique: true,
-        trim: true
+    plaqueImmatriculation: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
     },
     kilometrage: {
-        type: Number,
-        required: true,
-        min: 0
+      type: Number,
+      required: true,
+      min: 0,
     },
-    status: {
-        type: String,
-        required: true,
-        enum: ["available", "in-use", "maintenance"],
-        default: "available"
+    statut: {
+      type: String,
+      required: true,
+      enum: ['disponible', 'en-utilisation', 'en-maintenance'],
+      default: 'disponible',
     },
-    drivers: [{
+    conducteurs: [
+      {
         type: mongoose.Types.ObjectId,
-        ref: 'User'
-    }]
+        ref: 'Utilisateur',
+      },
+    ],
+  },
+  {
+    timestamps: true, // Ajoute automatiquement les champs createdAt et updatedAt
+  }
+);
 
-})
-
-export const Vehicle = model<IVehicle>("Vehicle", vehicleSchema);
+// Export du modèle Mongoose
+export const Vehicule = model<IVehicule>('Vehicule', vehiculeSchema);

@@ -4,6 +4,7 @@ import cors from 'cors';
 import {connectDB}  from './config/db.ts';
 import authRoutes from './routes/Auth.ts';
 import userRoutes from './routes/User.ts';
+import vehicleRoutes from './routes/Vehicle.ts';
 
 
 dotenv.config();
@@ -19,6 +20,7 @@ connectDB()
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/vehicles', vehicleRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
