@@ -1,17 +1,17 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import { Maintenance } from '../models/Maintenance.ts';
 import { Vehicule } from '../models/Vehicle.ts'; 
 // ➕ Créer une nouvelle maintenance
 export const createMaintenance = async (req: Request, res: Response) => {
   try {
     const {
-      typeDeMaintenance,
+      typeMaintenance,
       vehicule,
       kilometrage,
-      dateMaintenance,
+      dateEntretien,
       detailIntervention,
       coutTotal,
-      fournisseurPiecesRechange,
+      fournisseurPieces,
       garage,
     } = req.body;
 
@@ -22,13 +22,13 @@ export const createMaintenance = async (req: Request, res: Response) => {
     }
 
     const newMaintenance = new Maintenance({
-      typeDeMaintenance,
+      typeMaintenance,
       vehicule,
       kilometrage,
-      dateMaintenance,
+      dateEntretien,
       detailIntervention,
       coutTotal,
-      fournisseurPiecesRechange,
+      fournisseurPieces,
       garage,
     });
 
@@ -38,6 +38,7 @@ export const createMaintenance = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Erreur lors de la création', error });
   }
 };
+
 
 // 📄 Obtenir toutes les maintenances
 export const getAllMaintenances = async (_req: Request, res: Response) => {
