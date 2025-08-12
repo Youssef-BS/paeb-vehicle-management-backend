@@ -44,6 +44,13 @@ const userSchema : Schema<IUser> = new Schema({
         minlength : [8, "Password must be at least 8 characters long"],
     } ,
 
+    role : {
+        type : String ,
+        required : true ,
+        enum : ["user", "admin"],
+        default : "user"
+    }
+
 
 })
 
