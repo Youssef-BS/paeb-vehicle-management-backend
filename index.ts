@@ -4,6 +4,8 @@ import cors from 'cors';
 import {connectDB}  from './config/db.ts';
 import authRoutes from './routes/Auth.ts';
 import userRoutes from './routes/User.ts';
+import vehicleRoutes from './routes/Vehicle.ts';
+import maintenanceRoutes from './routes/Maintenance.ts';
 
 
 dotenv.config();
@@ -16,6 +18,7 @@ app.use(cors(
   {
     origin: process.env.CLIENT_URL || "http://localhost:3000",
     credentials: true,
+
   }
 ))
 
@@ -23,6 +26,8 @@ connectDB()
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/vehicles', vehicleRoutes);
+app.use('/api/maintenances', maintenanceRoutes);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
