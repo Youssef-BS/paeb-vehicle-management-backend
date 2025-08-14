@@ -66,7 +66,7 @@ const vehiculeSchema: Schema<IVehicule> = new Schema(
     conducteurs: [
       {
         type: mongoose.Types.ObjectId,
-        ref: 'Utilisateur',
+        ref: 'User',
       },
     ],
   },
