@@ -15,7 +15,12 @@ const app = express();
 
 app.use(express.json());
 
-app.use(cors())
+app.use(cors(
+  {
+    origin: 'http://localhost:3000', // Adjust this to your frontend URL
+    credentials: true, // Allow credentials if needed
+  }
+))
 
 connectDB()
 
@@ -25,7 +30,7 @@ app.use('/api/vehicles', vehicleRoutes);
 app.use('/api/maintenances', maintenanceRoutes);
 
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
