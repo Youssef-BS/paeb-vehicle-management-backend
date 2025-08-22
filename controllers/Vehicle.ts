@@ -159,9 +159,3 @@ export const vendreVehicule = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Erreur lors de la vente du véhicule', error: err });
   }
 };
-
-
-
-
-
-
