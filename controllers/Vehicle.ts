@@ -2,6 +2,7 @@ import type { Request, Response } from 'express';
 import { Vehicule } from '../models/Vehicle.ts';
 import mongoose from 'mongoose';
 
+// ➕ Créer un véhicule
 export const ajouterVehicule = async (req: Request, res: Response) => {
   try {
     const nouveauVehicule = new Vehicule(req.body);
@@ -15,10 +16,10 @@ export const ajouterVehicule = async (req: Request, res: Response) => {
   }
 };
 
-
+// 📄 Obtenir tous les véhicules
 export const obtenirTousLesVehicules = async (_req: Request, res: Response) => {
   try {
-    const vehicules = await Vehicule.find().populate('conducteurs'); 
+    const vehicules = await Vehicule.find().populate('conducteurs'); // ✅ correction ici
     res.status(200).json(vehicules);
   } catch (err) {
     res.status(500).json({
@@ -28,6 +29,7 @@ export const obtenirTousLesVehicules = async (_req: Request, res: Response) => {
   }
 };
 
+// 🔍 Obtenir un véhicule par ID
 export const obtenirVehiculeParId = async (req: Request, res: Response) => {
   const { id } = req.params;
 
@@ -36,9 +38,7 @@ export const obtenirVehiculeParId = async (req: Request, res: Response) => {
   }
 
   try {
-
-    const vehicule = await Vehicule.findById(id).populate('conducteurs'); 
-
+    const vehicule = await Vehicule.findById(id).populate('conducteurs'); // ✅ correction ici
     if (!vehicule) {
       return res.status(404).json({ message: 'Véhicule non trouvé' });
     }
@@ -48,6 +48,7 @@ export const obtenirVehiculeParId = async (req: Request, res: Response) => {
   }
 };
 
+// ✏️ Mettre à jour un véhicule
 export const mettreAJourVehicule = async (req: Request, res: Response) => {
   const { id } = req.params;
 
@@ -69,6 +70,7 @@ export const mettreAJourVehicule = async (req: Request, res: Response) => {
   }
 };
 
+// 🗑️ Supprimer un véhicule
 export const supprimerVehicule = async (req: Request, res: Response) => {
   const { id } = req.params;
 
