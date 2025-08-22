@@ -2,25 +2,24 @@ import mongoose, { Schema, model, Document } from 'mongoose';
 
 // Interface TypeScript du véhicule
 export interface IVehicule extends Document {
-  dateAjout: Date;
   typeVehicule: 'voiture' | 'camion' | 'moto' | 'bus';
   marque: string;
   modele: string;
-  annee: number;
+  dateMiseEnCirculation: Date;
   couleur: string;
   plaqueImmatriculation: string;
   kilometrage: number;
-  statut: 'disponible' | 'en-utilisation' | 'en-maintenance';
+  statut: 'disponible' | 'en-utilisation' | 'en-maintenance' | 'vendu';
+  prix: number;
   conducteurs: mongoose.Types.ObjectId[];
+  prixVente?: number | null;
+  dateVente: Date | null;
+ 
 }
 
 // Schéma Mongoose du véhicule
 const vehiculeSchema: Schema<IVehicule> = new Schema(
   {
-    dateAjout: {
-      type: Date,
-      default: Date.now,
-    },
     typeVehicule: {
       type: String,
       required: true,
@@ -36,10 +35,9 @@ const vehiculeSchema: Schema<IVehicule> = new Schema(
       required: true,
       trim: true,
     },
-    annee: {
-      type: Number,
+    dateMiseEnCirculation: {
+      type: Date,
       required: true,
-      min: 1886,
     },
     couleur: {
       type: String,
@@ -60,8 +58,13 @@ const vehiculeSchema: Schema<IVehicule> = new Schema(
     statut: {
       type: String,
       required: true,
-      enum: ['disponible', 'en-utilisation', 'en-maintenance'],
+      enum: ['disponible', 'en-utilisation', 'en-maintenance', 'vendu'],
       default: 'disponible',
+    },
+    prix: {
+      type: Number,
+      required: true,
+      min: 0,
     },
     conducteurs: [
       {
@@ -69,9 +72,20 @@ const vehiculeSchema: Schema<IVehicule> = new Schema(
         ref: 'User',
       },
     ],
+    // 🔹 Nouveaux champs
+    prixVente: {
+      type: Number,
+      default: null,
+    },
+     dateVente: {
+      type: Date,
+      required: true,
+    },
+
+   
   },
   {
-    timestamps: true, // Ajoute automatiquement les champs createdAt et updatedAt
+    timestamps: true,
   }
 );
 
