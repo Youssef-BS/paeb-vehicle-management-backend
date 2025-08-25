@@ -5,7 +5,8 @@ import {
   obtenirVehiculeParId,
   mettreAJourVehicule,
   supprimerVehicule,
-  vendreVehicule
+  vendreVehicule,
+  obtenirAlertesVisiteTechnique
 } from '../controllers/Vehicle.ts';
 
 const router = express.Router();
@@ -25,7 +26,11 @@ router.put('/:id', mettreAJourVehicule);
 // Supprimer un véhicule
 router.delete('/:id', supprimerVehicule);
 
+// Vendre un véhicule
 router.put('/vendre/:id', vendreVehicule);
+
+// routes/vehiculeRoutes.ts
+router.get("/alertes/visite-technique", obtenirAlertesVisiteTechnique);
 
 
 export default router;
