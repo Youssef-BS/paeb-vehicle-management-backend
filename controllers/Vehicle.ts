@@ -51,8 +51,22 @@ export const ajouterVehicule = async (req: Request, res: Response) => {
 // 📋 Récupérer tous les véhicules
 export const obtenirTousLesVehicules = async (_req: Request, res: Response) => {
   try {
-    const vehicules = await Vehicule.find().populate('conducteurs');
-    res.status(200).json(vehicules);
+    const vehicules = await Vehicule.find()
+      .populate('conducteurs')
+      .populate('maintenances');
+
+    const vehiculesWithCout = vehicules.map(v => {
+      const totalCoutMaintenance = (v.maintenances as any[]).reduce(
+        (acc, maintenance) => acc + (maintenance.coutTotal || 0),
+        0
+      );
+      return {
+        ...v.toObject(),
+        totalCoutMaintenance,
+      };
+    });
+
+    res.status(200).json(vehiculesWithCout);
   } catch (err) {
     res.status(500).json({
       message: 'Erreur lors de la récupération des véhicules',
@@ -60,6 +74,7 @@ export const obtenirTousLesVehicules = async (_req: Request, res: Response) => {
     });
   }
 };
+
 
 // 🔎 Récupérer un véhicule par ID
 export const obtenirVehiculeParId = async (req: Request, res: Response) => {

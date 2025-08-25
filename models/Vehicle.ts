@@ -11,10 +11,12 @@ export interface IVehicule extends Document {
   statut: 'disponible' | 'en-utilisation' | 'en-maintenance' | 'vendu';
   prix: number;
   conducteurs: mongoose.Types.ObjectId[];
+  maintenances?: mongoose.Types.ObjectId[];
   prixVente?: number | null;
-  dateVente: Date | null;
+  dateVente?: Date | null;
   alertDateVisiteTechnique?: Date | null;
 }
+
 
 
 const vehiculeSchema: Schema<IVehicule> = new Schema(
@@ -71,6 +73,14 @@ const vehiculeSchema: Schema<IVehicule> = new Schema(
         ref: 'User',
       },
     ],
+    maintenances: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: 'Maintenance',
+      },
+    ],
+
+     
     prixVente: {
       type: Number,
       default: null,
