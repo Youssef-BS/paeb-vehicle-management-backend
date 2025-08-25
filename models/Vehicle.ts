@@ -1,6 +1,5 @@
 import mongoose, { Schema, model, Document } from 'mongoose';
 
-// Interface TypeScript du véhicule
 export interface IVehicule extends Document {
   typeVehicule: 'voiture' | 'camion' | 'moto' | 'bus';
   marque: string;
@@ -17,7 +16,7 @@ export interface IVehicule extends Document {
   alertDateVisiteTechnique?: Date | null;
 }
 
-// Schéma Mongoose du véhicule
+
 const vehiculeSchema: Schema<IVehicule> = new Schema(
   {
     typeVehicule: {
@@ -72,7 +71,6 @@ const vehiculeSchema: Schema<IVehicule> = new Schema(
         ref: 'User',
       },
     ],
-    // 🔹 Nouveaux champs
     prixVente: {
       type: Number,
       default: null,
@@ -84,6 +82,8 @@ const vehiculeSchema: Schema<IVehicule> = new Schema(
     alertDateVisiteTechnique: {
       type: Date,
       required: true,
+      default: null,
+
     },
 
    
@@ -93,5 +93,4 @@ const vehiculeSchema: Schema<IVehicule> = new Schema(
   }
 );
 
-// Export du modèle Mongoose
 export const Vehicule = model<IVehicule>('Vehicule', vehiculeSchema);
