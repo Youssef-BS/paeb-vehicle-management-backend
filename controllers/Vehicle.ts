@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express';
 import { Vehicule } from '../models/Vehicle.ts';
+import { Maintenance } from '../models/Maintenance.ts';
 import mongoose from 'mongoose';
 
 // ➕ Ajouter un véhicule
@@ -126,7 +127,13 @@ export const supprimerVehicule = async (req: Request, res: Response) => {
   }
 
   try {
-    const vehiculeSupprime = await Vehicule.findByIdAndDelete(id);
+
+    const vehiculeSupprime = await Vehicule.findByIdAndDelete(id , {
+      pre: async function(next : any) {
+        await Maintenance.deleteMany({ vehicule: this._id });
+        next();
+      }
+    });
     if (!vehiculeSupprime) {
       return res.status(404).json({ message: 'Véhicule non trouvé' });
     }
