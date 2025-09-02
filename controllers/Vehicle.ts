@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express';
 import { Vehicule } from '../models/Vehicle.ts';
+import { Maintenance } from '../models/Maintenance.ts';
 import mongoose from 'mongoose';
 
 // ➕ Ajouter un véhicule
@@ -56,8 +57,9 @@ export const obtenirTousLesVehicules = async (_req: Request, res: Response) => {
       .populate('maintenances');
 
     const vehiculesWithCout = vehicules.map(v => {
+      // S'assurer que coutTotal est un nombre
       const totalCoutMaintenance = (v.maintenances as any[]).reduce(
-        (acc, maintenance) => acc + (maintenance.coutTotal || 0),
+        (acc, maintenance) => acc + (Number(maintenance.coutTotal) || 0),
         0
       );
       return {
@@ -85,13 +87,29 @@ export const obtenirVehiculeParId = async (req: Request, res: Response) => {
   }
 
   try {
-    const vehicule = await Vehicule.findById(id).populate('conducteurs');
+    const vehicule = await Vehicule.findById(id)
+      .populate('conducteurs')
+      .populate('maintenances');
+
     if (!vehicule) {
       return res.status(404).json({ message: 'Véhicule non trouvé' });
     }
-    res.status(200).json(vehicule);
+
+    // ✅ Calcul du coût total des maintenances
+    const totalCoutMaintenance = (vehicule.maintenances as any[]).reduce(
+      (acc, maintenance) => acc + (Number(maintenance.coutTotal) || 0),
+      0
+    );
+
+    res.status(200).json({
+      ...vehicule.toObject(),
+      totalCoutMaintenance,
+    });
   } catch (err) {
-    res.status(500).json({ message: 'Erreur serveur', error: err });
+    res.status(500).json({
+      message: 'Erreur lors de la récupération du véhicule',
+      error: err,
+    });
   }
 };
 
@@ -128,7 +146,13 @@ export const supprimerVehicule = async (req: Request, res: Response) => {
   }
 
   try {
-    const vehiculeSupprime = await Vehicule.findByIdAndDelete(id);
+
+    const vehiculeSupprime = await Vehicule.findByIdAndDelete(id , {
+      pre: async function(next : any) {
+        await Maintenance.deleteMany({ vehicule: this._id });
+        next();
+      }
+    });
     if (!vehiculeSupprime) {
       return res.status(404).json({ message: 'Véhicule non trouvé' });
     }
