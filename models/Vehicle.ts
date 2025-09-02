@@ -14,7 +14,9 @@ export interface IVehicule extends Document {
   maintenances?: mongoose.Types.ObjectId[];
   prixVente?: number | null;
   dateVente?: Date | null;
- }
+  alertDateVisiteTechnique?: Date | null;
+}
+
 
 
 const vehiculeSchema: Schema<IVehicule> = new Schema(
@@ -85,7 +87,13 @@ const vehiculeSchema: Schema<IVehicule> = new Schema(
     },
      dateVente: {
       type: Date,
+      required: false,
+    },
+    alertDateVisiteTechnique: {
+      type: Date,
+      required: true,
       default: null,
+
     },
 
    

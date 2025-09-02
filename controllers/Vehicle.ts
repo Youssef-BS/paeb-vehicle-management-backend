@@ -16,7 +16,8 @@ export const ajouterVehicule = async (req: Request, res: Response) => {
       kilometrage,
       statut,
       prix,
-      conducteurs
+      conducteurs,
+      alertDateVisiteTechnique
     } = req.body;
 
     // Vérification manuelle de certains champs obligatoires
@@ -34,7 +35,8 @@ export const ajouterVehicule = async (req: Request, res: Response) => {
       kilometrage,
       statut,
       prix,
-      conducteurs
+      conducteurs,
+      alertDateVisiteTechnique
     });
 
     const vehiculeSauvegarde = await nouveauVehicule.save();
@@ -55,8 +57,9 @@ export const obtenirTousLesVehicules = async (_req: Request, res: Response) => {
       .populate('maintenances');
 
     const vehiculesWithCout = vehicules.map(v => {
+      // S'assurer que coutTotal est un nombre
       const totalCoutMaintenance = (v.maintenances as any[]).reduce(
-        (acc, maintenance) => acc + (maintenance.coutTotal || 0),
+        (acc, maintenance) => acc + (Number(maintenance.coutTotal) || 0),
         0
       );
       return {
@@ -84,13 +87,29 @@ export const obtenirVehiculeParId = async (req: Request, res: Response) => {
   }
 
   try {
-    const vehicule = await Vehicule.findById(id).populate('conducteurs');
+    const vehicule = await Vehicule.findById(id)
+      .populate('conducteurs')
+      .populate('maintenances');
+
     if (!vehicule) {
       return res.status(404).json({ message: 'Véhicule non trouvé' });
     }
-    res.status(200).json(vehicule);
+
+    // ✅ Calcul du coût total des maintenances
+    const totalCoutMaintenance = (vehicule.maintenances as any[]).reduce(
+      (acc, maintenance) => acc + (Number(maintenance.coutTotal) || 0),
+      0
+    );
+
+    res.status(200).json({
+      ...vehicule.toObject(),
+      totalCoutMaintenance,
+    });
   } catch (err) {
-    res.status(500).json({ message: 'Erreur serveur', error: err });
+    res.status(500).json({
+      message: 'Erreur lors de la récupération du véhicule',
+      error: err,
+    });
   }
 };
 
@@ -179,5 +198,47 @@ export const vendreVehicule = async (req: Request, res: Response) => {
     res.status(200).json(vehiculeMisAJour);
   } catch (err) {
     res.status(500).json({ message: 'Erreur lors de la vente du véhicule', error: err });
+  }
+};
+
+
+
+
+
+
+
+
+export const obtenirAlertesVisiteTechnique = async (_req: Request, res: Response) => {
+  try {
+    // ✅ Start of today (local)
+    const startOfToday = new Date();
+    startOfToday.setHours(0, 0, 0, 0);
+
+    // ✅ End of the day 7 days later
+    const endDate = new Date();
+    endDate.setDate(startOfToday.getDate() + 7);
+    endDate.setHours(23, 59, 59, 999);
+
+    // 🔍 Find vehicles with alertDateVisiteTechnique within the next 7 days and not sold
+    const vehicules = await Vehicule.find({
+      alertDateVisiteTechnique: { $gte: startOfToday, $lte: endDate },
+      statut: { $ne: 'vendu' }
+    });
+
+    // Map backend fields to frontend-friendly names
+    const alerts = vehicules.map(v => ({
+      _id: v._id,
+      marque: v.marque,
+      modele: v.modele,
+      plaqueImmatriculation: v.plaqueImmatriculation,
+      dateVisiteTechnique: v.alertDateVisiteTechnique
+    }));
+
+    res.status(200).json(alerts);
+  } catch (err) {
+    res.status(500).json({
+      message: "Erreur lors de la récupération des alertes",
+      error: err,
+    });
   }
 };
