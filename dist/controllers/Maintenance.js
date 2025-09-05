@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteMaintenance = exports.updateMaintenance = exports.getMaintenanceById = exports.getAllMaintenances = exports.createMaintenance = void 0;
-const Maintenance_ts_1 = require("../models/Maintenance");
-const Vehicle_ts_1 = require("../models/Vehicle");
+const Maintenance_ts_1 = require("../models/Maintenance.ts");
+const Vehicle_ts_1 = require("../models/Vehicle.ts");
 // ➕ Créer une nouvelle maintenance
 const createMaintenance = async (req, res) => {
     try {
