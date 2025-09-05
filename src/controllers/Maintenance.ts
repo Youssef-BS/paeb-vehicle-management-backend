@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
-import { Maintenance } from '../models/Maintenance.ts';
-import { Vehicule } from '../models/Vehicle.ts'; 
+import { Maintenance } from '../models/Maintenance';
+import { Vehicule } from '../models/Vehicle'; 
 // ➕ Créer une nouvelle maintenance
 export const createMaintenance = async (req: Request, res: Response) => {
   try {

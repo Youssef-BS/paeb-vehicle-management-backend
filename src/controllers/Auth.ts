@@ -1,4 +1,4 @@
-import { User } from "../models/User.ts";
+import { User } from "../models/User";
 import type { Request, Response } from 'express';
 import jwt from "jsonwebtoken";
 

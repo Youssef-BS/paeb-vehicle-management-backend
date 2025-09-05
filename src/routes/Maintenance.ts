@@ -1,4 +1,4 @@
-// routes/maintenance.routes.ts
+// routes/maintenance.routes
 
 import express from 'express';
 import {
@@ -7,7 +7,7 @@ import {
   getMaintenanceById,
   updateMaintenance,
   deleteMaintenance,
-} from '../controllers/Maintenance.ts';
+} from '../controllers/Maintenance';
 
 const router = express.Router();
 
