@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.register = exports.Login = void 0;
-const User_ts_1 = require("../models/User.ts");
+const User_ts_1 = require("../models/User");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const Login = async (req, res) => {
     const { email, password } = req.body;
