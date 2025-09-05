@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
-import { Vehicule } from '../models/Vehicle.ts';
-import { Maintenance } from '../models/Maintenance.ts';
+import { Vehicule } from '../models/Vehicle';
+import { Maintenance } from '../models/Maintenance';
 import mongoose from 'mongoose';
 
 // ➕ Ajouter un véhicule

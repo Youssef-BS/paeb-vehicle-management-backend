@@ -1,11 +1,11 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import {connectDB}  from './config/db.ts';
-import authRoutes from './routes/Auth.ts';
-import userRoutes from './routes/User.ts';
-import vehicleRoutes from './routes/Vehicle.ts';
-import maintenanceRoutes from './routes/Maintenance.ts';
+import {connectDB}  from './config/db';
+import authRoutes from './routes/Auth';
+import userRoutes from './routes/User';
+import vehicleRoutes from './routes/Vehicle';
+import maintenanceRoutes from './routes/Maintenance';
 
 
 dotenv.config();

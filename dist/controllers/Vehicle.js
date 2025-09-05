@@ -4,8 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.obtenirAlertesVisiteTechnique = exports.vendreVehicule = exports.supprimerVehicule = exports.mettreAJourVehicule = exports.obtenirVehiculeParId = exports.obtenirTousLesVehicules = exports.ajouterVehicule = void 0;
-const Vehicle_ts_1 = require("../models/Vehicle.ts");
-const Maintenance_ts_1 = require("../models/Maintenance.ts");
+const Vehicle_1 = require("../models/Vehicle");
+const Maintenance_1 = require("../models/Maintenance");
 const mongoose_1 = __importDefault(require("mongoose"));
 // ➕ Ajouter un véhicule
 const ajouterVehicule = async (req, res) => {
@@ -15,7 +15,7 @@ const ajouterVehicule = async (req, res) => {
         if (!typeVehicule || !marque || !modele || !dateMiseEnCirculation || !couleur || !plaqueImmatriculation || prix === undefined) {
             return res.status(400).json({ message: 'Champs obligatoires manquants' });
         }
-        const nouveauVehicule = new Vehicle_ts_1.Vehicule({
+        const nouveauVehicule = new Vehicle_1.Vehicule({
             typeVehicule,
             marque,
             modele,
@@ -42,7 +42,7 @@ exports.ajouterVehicule = ajouterVehicule;
 // 📋 Récupérer tous les véhicules
 const obtenirTousLesVehicules = async (_req, res) => {
     try {
-        const vehicules = await Vehicle_ts_1.Vehicule.find()
+        const vehicules = await Vehicle_1.Vehicule.find()
             .populate('conducteurs')
             .populate('maintenances');
         const vehiculesWithCout = vehicules.map(v => {
@@ -70,7 +70,7 @@ const obtenirVehiculeParId = async (req, res) => {
         return res.status(400).json({ message: 'ID invalide' });
     }
     try {
-        const vehicule = await Vehicle_ts_1.Vehicule.findById(id)
+        const vehicule = await Vehicle_1.Vehicule.findById(id)
             .populate('conducteurs')
             .populate('maintenances');
         if (!vehicule) {
@@ -98,7 +98,7 @@ const mettreAJourVehicule = async (req, res) => {
         return res.status(400).json({ message: 'ID invalide' });
     }
     try {
-        const vehiculeMisAJour = await Vehicle_ts_1.Vehicule.findByIdAndUpdate(id, req.body, { new: true, runValidators: true });
+        const vehiculeMisAJour = await Vehicle_1.Vehicule.findByIdAndUpdate(id, req.body, { new: true, runValidators: true });
         if (!vehiculeMisAJour) {
             return res.status(404).json({ message: 'Véhicule non trouvé' });
         }
@@ -116,9 +116,9 @@ const supprimerVehicule = async (req, res) => {
         return res.status(400).json({ message: 'ID invalide' });
     }
     try {
-        const vehiculeSupprime = await Vehicle_ts_1.Vehicule.findByIdAndDelete(id, {
+        const vehiculeSupprime = await Vehicle_1.Vehicule.findByIdAndDelete(id, {
             pre: async function (next) {
-                await Maintenance_ts_1.Maintenance.deleteMany({ vehicule: this._id });
+                await Maintenance_1.Maintenance.deleteMany({ vehicule: this._id });
                 next();
             }
         });
@@ -143,7 +143,7 @@ const vendreVehicule = async (req, res) => {
         return res.status(400).json({ message: 'Prix de vente et date de vente obligatoires' });
     }
     try {
-        const vehiculeMisAJour = await Vehicle_ts_1.Vehicule.findByIdAndUpdate(id, {
+        const vehiculeMisAJour = await Vehicle_1.Vehicule.findByIdAndUpdate(id, {
             prixVente,
             dateVente,
             statut: 'vendu',
@@ -168,7 +168,7 @@ const obtenirAlertesVisiteTechnique = async (_req, res) => {
         endDate.setDate(startOfToday.getDate() + 7);
         endDate.setHours(23, 59, 59, 999);
         // 🔍 Find vehicles with alertDateVisiteTechnique within the next 7 days and not sold
-        const vehicules = await Vehicle_ts_1.Vehicule.find({
+        const vehicules = await Vehicle_1.Vehicule.find({
             alertDateVisiteTechnique: { $gte: startOfToday, $lte: endDate },
             statut: { $ne: 'vendu' }
         });

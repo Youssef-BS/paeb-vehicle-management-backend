@@ -7,7 +7,7 @@ import {
   supprimerVehicule,
   vendreVehicule,
   obtenirAlertesVisiteTechnique
-} from '../controllers/Vehicle.ts';
+} from '../controllers/Vehicle';
 
 const router = express.Router();
 
@@ -29,7 +29,7 @@ router.delete('/:id', supprimerVehicule);
 // Vendre un véhicule
 router.put('/vendre/:id', vendreVehicule);
 
-// routes/vehiculeRoutes.ts
+// routes/vehiculeRoutes
 router.get("/alertes/visite-technique", obtenirAlertesVisiteTechnique);
 
 

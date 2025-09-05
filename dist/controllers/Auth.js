@@ -4,12 +4,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.register = exports.Login = void 0;
-const User_ts_1 = require("../models/User.ts");
+const User_1 = require("../models/User");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const Login = async (req, res) => {
     const { email, password } = req.body;
     try {
-        const user = await User_ts_1.User.findOne({ email: email });
+        const user = await User_1.User.findOne({ email: email });
         if (!user)
             return res.status(404).json({ message: "User not found" });
         if (user.password !== password)
@@ -35,11 +35,11 @@ exports.Login = Login;
 const register = async (req, res) => {
     const { firstName, lastName, email, password, role } = req.body;
     try {
-        const existingUser = await User_ts_1.User.findOne({ email });
+        const existingUser = await User_1.User.findOne({ email });
         if (existingUser) {
             return res.status(400).json({ message: "User already exists" });
         }
-        const newUser = new User_ts_1.User({
+        const newUser = new User_1.User({
             firstName,
             lastName,
             email,
