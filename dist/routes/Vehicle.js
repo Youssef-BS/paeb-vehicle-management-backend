@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const Vehicle_ts_1 = require("../controllers/Vehicle.js");
+const Vehicle_ts_1 = require("../controllers/Vehicle");
 const router = express_1.default.Router();
 // Ajouter un véhicule
 router.post('/', Vehicle_ts_1.ajouterVehicule);
@@ -18,6 +18,6 @@ router.put('/:id', Vehicle_ts_1.mettreAJourVehicule);
 router.delete('/:id', Vehicle_ts_1.supprimerVehicule);
 // Vendre un véhicule
 router.put('/vendre/:id', Vehicle_ts_1.vendreVehicule);
-// routes/vehiculeRoutes.js
+// routes/vehiculeRoutes
 router.get("/alertes/visite-technique", Vehicle_ts_1.obtenirAlertesVisiteTechnique);
 exports.default = router;

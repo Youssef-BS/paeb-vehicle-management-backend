@@ -4,8 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.obtenirAlertesVisiteTechnique = exports.vendreVehicule = exports.supprimerVehicule = exports.mettreAJourVehicule = exports.obtenirVehiculeParId = exports.obtenirTousLesVehicules = exports.ajouterVehicule = void 0;
-const Vehicle_ts_1 = require("../models/Vehicle.js");
-const Maintenance_ts_1 = require("../models/Maintenance.js");
+const Vehicle_ts_1 = require("../models/Vehicle");
+const Maintenance_ts_1 = require("../models/Maintenance");
 const mongoose_1 = __importDefault(require("mongoose"));
 // ➕ Ajouter un véhicule
 const ajouterVehicule = async (req, res) => {

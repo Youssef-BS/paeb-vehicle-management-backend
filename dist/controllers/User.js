@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteUser = exports.updateUser = exports.getUserById = exports.getUsers = void 0;
-const User_ts_1 = require("../models/User.js");
+const User_ts_1 = require("../models/User");
 const getUsers = async (req, res) => {
     try {
         const users = await User_ts_1.User.find();
