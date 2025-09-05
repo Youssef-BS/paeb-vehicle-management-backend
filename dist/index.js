@@ -15,7 +15,7 @@ dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use((0, cors_1.default)({
-    origin: process.env.CLIENT_URL || "https://paeb-vehicle-management-front.vercel.app/auth/login",
+    origin: process.env.CLIENT_URL || "https://paeb-vehicle-management-front.vercel.app",
     credentials: true,
 }));
 (0, db_1.connectDB)();
