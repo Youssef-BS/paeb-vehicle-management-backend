@@ -16,7 +16,7 @@ app.use(express.json());
 
 app.use(cors(
   {
-    origin: process.env.CLIENT_URL || "https://paeb-vehicle-management-front.vercel.app/auth/login",
+    origin: process.env.CLIENT_URL || "https://paeb-vehicle-management-front.vercel.app",
     credentials: true,
 
   }
